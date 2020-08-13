@@ -7,6 +7,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Pen = 1
 })
+let list: Sprite[] = []
 let Pen = 0
 let going = 0
 scene.setBackgroundImage(img`
@@ -307,7 +308,6 @@ let Main_Counter = 0
 Pen = 0
 let Paint_list = sprites.allOfKind(SpriteKind.Player)
 while (blockSettings.exists("" + convertToText(Counter) + "x") && blockSettings.exists("" + convertToText(Counter) + "y")) {
-    let list: Sprite[] = []
     list[Main_Counter] = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -332,8 +332,28 @@ while (blockSettings.exists("" + convertToText(Counter) + "x") && blockSettings.
 forever(function () {
     if (going == 1) {
         if (Pen == 1) {
-            if (controller.up.isPressed() || (controller.down.isPressed() || (controller.left.isPressed() || controller.right.isPressed()))) {
-            	
+            if (controller.up.isPressed()) {
+                list[Main_Counter] = sprites.create(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, SpriteKind.Player)
+                blockSettings.writeNumber("" + convertToText(Main_Counter) + "x", list[Main_Counter].x)
+                blockSettings.writeNumber("" + convertToText(Main_Counter) + "y", list[Main_Counter].y)
+                Main_Counter += 1
             }
         }
     }
