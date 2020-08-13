@@ -1,6 +1,13 @@
 namespace SpriteKind {
     export const Text = SpriteKind.create()
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    Pen = 0
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    Pen = 1
+})
+let Pen = 0
 let going = 0
 scene.setBackgroundImage(img`
     . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -297,6 +304,7 @@ controller.moveSprite(mySprite, 50, 50)
 mySprite.setFlag(SpriteFlag.StayInScreen, true)
 let Counter = 0
 let Main_Counter = 0
+Pen = 0
 let Paint_list = sprites.allOfKind(SpriteKind.Player)
 while (blockSettings.exists("" + convertToText(Counter) + "x") && blockSettings.exists("" + convertToText(Counter) + "y")) {
     let list: Sprite[] = []
@@ -318,9 +326,15 @@ while (blockSettings.exists("" + convertToText(Counter) + "x") && blockSettings.
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Player)
+    Counter += 1
+    Main_Counter += 1
 }
 forever(function () {
     if (going == 1) {
-    	
+        if (Pen == 1) {
+            if (controller.up.isPressed() || (controller.down.isPressed() || (controller.left.isPressed() || controller.right.isPressed()))) {
+            	
+            }
+        }
     }
 })
