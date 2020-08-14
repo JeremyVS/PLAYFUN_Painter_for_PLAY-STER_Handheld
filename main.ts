@@ -7,6 +7,12 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Pen = 1
 })
+controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (game.ask("REALLY! Clear EVERYTHING?", "It will be gone for good!")) {
+        blockSettings.clear()
+        game.reset()
+    }
+})
 let list: Sprite[] = []
 let Pen = 0
 let going = 0
@@ -301,7 +307,7 @@ let mySprite = sprites.create(img`
     . c . . . . . c c . . . . . c . 
     c . . . . . . c c . . . . . . c 
     `, SpriteKind.Player)
-controller.moveSprite(mySprite, 50, 50)
+controller.moveSprite(mySprite, 25, 25)
 mySprite.setFlag(SpriteFlag.StayInScreen, true)
 let Counter = 0
 let Main_Counter = 0
@@ -326,31 +332,34 @@ while (blockSettings.exists("" + convertToText(Counter) + "x") && blockSettings.
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Player)
+    list[Main_Counter].setPosition(blockSettings.readNumber("" + convertToText(Counter) + "x"), blockSettings.readNumber("" + convertToText(Counter) + "y"))
     Counter += 1
     Main_Counter += 1
 }
+going = 1
 forever(function () {
     if (going == 1) {
         if (Pen == 1) {
-            if (controller.up.isPressed()) {
+            if (controller.up.isPressed() || (controller.down.isPressed() || (controller.left.isPressed() || controller.right.isPressed()))) {
                 list[Main_Counter] = sprites.create(img`
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
-                    . . . . 7 7 7 7 7 7 7 7 7 . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . 7 7 . . . . . . . 
+                    . . . . . . . 7 7 . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     `, SpriteKind.Player)
+                list[Main_Counter].setPosition(mySprite.x, mySprite.y)
                 blockSettings.writeNumber("" + convertToText(Main_Counter) + "x", list[Main_Counter].x)
                 blockSettings.writeNumber("" + convertToText(Main_Counter) + "y", list[Main_Counter].y)
                 Main_Counter += 1
